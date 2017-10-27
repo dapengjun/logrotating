@@ -32,6 +32,8 @@ const (
 	Ltime                                   // the time in the local time zone: 01:23:23.456
 	Llongfile                               // full file name and line number: /a/b/c/d.go:23
 	Lshortfile                              // final file name element and line number: d.go:23. overrides Llongfile
+	Lstderr                                 // print stderr commonly
+	Lstdout                                 // print stdout commly
 	LstdFlags  = Ldate | Ltime | Lshortfile // initial values for the standard logger
 )
 
@@ -268,6 +270,11 @@ func (l *Logger) output(calldepth int, level int, s string) (string, error) {
 
 	l.checkFile(now)
 	_, err := l.out.Write(buf)
+	if l.flag&Lstderr != 0 {
+		fmt.Fprint(os.Stderr, string(buf))
+	} else if l.flag&Lstdout != 0 {
+		fmt.Fprint(os.Stdout, string(buf))
+	}
 	return string(buf), err
 }
 
