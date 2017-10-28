@@ -241,7 +241,7 @@ func (l *Logger) print(calldepth int, level int, args ...interface{}) string {
 }
 
 func (l *Logger) println(calldepth int, level int, args ...interface{}) string {
-	if level <= l.level {
+	if level > l.level {
 		return ""
 	}
 	text, _ := l.output(calldepth+1, level, fmt.Sprintln(args...))
@@ -249,7 +249,7 @@ func (l *Logger) println(calldepth int, level int, args ...interface{}) string {
 }
 
 func (l *Logger) printf(calldepth int, level int, format string, args ...interface{}) string {
-	if level <= l.level {
+	if level > l.level {
 		return ""
 	}
 	text, _ := l.output(calldepth+1, level, fmt.Sprintf(format, args...))

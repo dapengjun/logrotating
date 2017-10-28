@@ -5,6 +5,8 @@ import (
 )
 
 func Test_log(t *testing.T) {
-	SetLogLevel(LOG_LEVEL_ERROR)
-	Error("test")
+	//SetLogLevel(LOG_LEVEL_ERROR)
+	Info("Info")
+	Infoln("Infoln")
+	Infof("Infof")
 }
