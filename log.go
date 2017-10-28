@@ -136,6 +136,18 @@ func SetLogLevel(level int) {
 	std.SetLogLevel(level)
 }
 
+func Print(args ...interface{}) {
+	std.print(2, LOG_LEVEL_INFO, args...)
+}
+
+func Println(args ...interface{}) {
+	std.println(2, LOG_LEVEL_INFO, args...)
+}
+
+func Printf(format string, args ...interface{}) {
+	std.printf(2, LOG_LEVEL_INFO, format, args...)
+}
+
 func Panic(args ...interface{}) {
 	text := std.print(2, LOG_LEVEL_PANIC, args...)
 	panic(text)
