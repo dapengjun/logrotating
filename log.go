@@ -299,6 +299,9 @@ func (l *Logger) output(calldepth int, level int, s string) (string, error) {
 
 	l.checkFile(now)
 	_, err := l.out.Write(buf)
+	if err != nil {
+		fmt.Println(err)
+	}
 	if l.flag&Lstderr != 0 {
 		fmt.Fprint(os.Stderr, string(buf))
 	} else if l.flag&Lstdout != 0 {
@@ -313,10 +316,10 @@ func (l *Logger) checkFile(t time.Time) {
 	}
 	f, err := os.Stat(l.file)
 	if err != nil {
+		fmt.Println(err)
 		return
 	}
-	if int64(l.size) >= f.Size() {
-		fmt.Println(l.size, f.Size())
+	if f.Size() >= int64(l.size) {
 		switch f := l.out.(type) {
 		case *os.File:
 			if f == os.Stderr {
@@ -329,7 +332,7 @@ func (l *Logger) checkFile(t time.Time) {
 				timestamp := t.Unix()
 				newFileName := fmt.Sprintf("%s.%d", l.file, timestamp)
 				os.Rename(l.file, newFileName)
-				f, _ := os.OpenFile(l.file, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
+				f, _ := os.OpenFile(l.file, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 				l.out = f
 			}
 		}
