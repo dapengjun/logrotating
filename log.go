@@ -92,7 +92,7 @@ func SetFile(file string, size int) {
 	std.size = size
 	f, err := os.OpenFile(file, os.O_APPEND|os.O_CREATE, 0644)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Printf("SetFile %s\n", err)
 	}
 	std.out = f
 }
@@ -294,7 +294,7 @@ func (l *Logger) output(calldepth int, level int, s string) (string, error) {
 	l.checkFile(now)
 	_, err := l.out.Write(buf)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Printf("write to file %s\n", err)
 	}
 	if l.flag&Lstderr != 0 {
 		fmt.Fprint(os.Stderr, string(buf))
@@ -310,7 +310,7 @@ func (l *Logger) checkFile(t time.Time) {
 	}
 	f, err := os.Stat(l.file)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Printf("Stat %s\n", err)
 		return
 	}
 	if f.Size() >= int64(l.size) {
@@ -328,7 +328,7 @@ func (l *Logger) checkFile(t time.Time) {
 				os.Rename(l.file, newFileName)
 				f, err := os.OpenFile(l.file, os.O_APPEND|os.O_CREATE, 0644)
 				if err != nil {
-					fmt.Println(err)
+					fmt.Printf("checkFile OpenFile %s\n", err)
 				}
 				l.out = f
 			}
