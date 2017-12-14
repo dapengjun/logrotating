@@ -82,7 +82,10 @@ func SetFile(file string, size int) {
 	}
 	std.file = file
 	std.size = size
-	f, _ := os.Open(file)
+	f, err := os.Open(file)
+	if err != nil {
+		fmt.Println(err)
+	}
 	std.out = f
 }
 
