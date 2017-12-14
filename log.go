@@ -294,7 +294,7 @@ func (l *Logger) output(calldepth int, level int, s string) (string, error) {
 	l.checkFile(now)
 	_, err := l.out.Write(buf)
 	if err != nil {
-		fmt.Printf("write to file %s\n", err)
+		fmt.Printf("write to file[%v] %s\n", l.out, err)
 	}
 	if l.flag&Lstderr != 0 {
 		fmt.Fprint(os.Stderr, string(buf))
