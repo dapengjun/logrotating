@@ -316,6 +316,7 @@ func (l *Logger) checkFile(t time.Time) {
 		return
 	}
 	if int64(l.size) >= f.Size() {
+		fmt.Println(l.size, f.Size())
 		switch f := l.out.(type) {
 		case *os.File:
 			if f == os.Stderr {
@@ -328,7 +329,7 @@ func (l *Logger) checkFile(t time.Time) {
 				timestamp := t.Unix()
 				newFileName := fmt.Sprintf("%s.%d", l.file, timestamp)
 				os.Rename(l.file, newFileName)
-				f, _ := os.Open(l.file)
+				f, _ := os.OpenFile(l.file, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
 				l.out = f
 			}
 		}
