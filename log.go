@@ -90,7 +90,7 @@ func SetFile(file string, size int) {
 	}
 	std.file = file
 	std.size = size
-	f, err := os.OpenFile(file, os.O_APPEND|os.O_CREATE, 0644)
+	f, err := os.OpenFile(file, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
 		fmt.Printf("SetFile %s\n", err)
 	}
@@ -326,7 +326,7 @@ func (l *Logger) checkFile(t time.Time) {
 				timestamp := t.Unix()
 				newFileName := fmt.Sprintf("%s.%d", l.file, timestamp)
 				os.Rename(l.file, newFileName)
-				f, err := os.OpenFile(l.file, os.O_APPEND|os.O_CREATE, 0644)
+				f, err := os.OpenFile(l.file, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 				if err != nil {
 					fmt.Printf("checkFile OpenFile %s\n", err)
 				}
