@@ -62,6 +62,14 @@ func SetFlag(flag int) {
 	std.flag = flag
 }
 
+func checkFileIsExist(filename string) bool {
+	var exist = true
+	if _, err := os.Stat(filename); os.IsNotExist(err) {
+		exist = false
+	}
+	return exist
+}
+
 func SetFile(file string, size int) {
 	std.mu.Lock()
 	defer std.mu.Unlock()
@@ -82,7 +90,13 @@ func SetFile(file string, size int) {
 	}
 	std.file = file
 	std.size = size
-	f, err := os.Open(file)
+	var f *os.File
+	var err error
+	if !checkFileIsExist(file) {
+		f, err = os.Create(file)
+	} else {
+		f, err = os.Open(file)
+	}
 	if err != nil {
 		fmt.Println(err)
 	}
